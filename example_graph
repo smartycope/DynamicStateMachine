@@ -1,0 +1,21 @@
+// ExampleMachine
+digraph {
+	Start [label=Start fillcolor=green shape=box style=filled]
+	Start -> a
+	a [label=a shape=box style=rounded]
+	a -> b
+	b [label=b shape=box style=rounded]
+	do_the_thing [label=do_the_thing fillcolor=grey80 shape=oval style=filled]
+	b -> do_the_thing
+	do_the_thing -> a [label="if decider is True"]
+	do_the_thing -> pre_c [label=""]
+	pre_c [label=pre_c shape=box style=dotted]
+	pre_c -> c
+	c [label=c shape=box style=rounded]
+	decide_if_done [label=decide_if_done fillcolor=grey80 shape=oval style=filled]
+	c -> decide_if_done
+	End0 [label=End fillcolor=red shape=triangle style=filled]
+	decide_if_done -> End0 [label="Im done talking to you now."]
+	decide_if_done -> a [label="no keep going!"]
+	a [color=blue style=bold]
+}

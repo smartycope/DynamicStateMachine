@@ -179,10 +179,11 @@ class DynamicStateMachine:
 
         self._state = new
 
-    def next(self, *args, **kwargs):
+    def next(self, *args, **kwargs) -> State:
         """ Transition to the next state. If the next state is a virtual state, then it will
         immediately transition to the state after that.
         Pass along any additional arguments to the transition and side effect methods.
+        Returns the current state, for convenience
         """
         # Stupid Python not having do-while loops
         do = True
@@ -208,6 +209,8 @@ class DynamicStateMachine:
             assert isinstance(next_state, State) or next_state is None, _warning
             # Pass along the args and kwargs, so the before/after methods can use them
             self.set_state(next_state, *args, **kwargs)
+
+        return self.state
 
     # This would probably be easier and work better if it used ast instead of dis
     @staticmethod
@@ -333,7 +336,7 @@ class DynamicStateMachine:
         # optionally be disconnect virtual states
         if 'comment' not in graph_attrs:
             graph_attrs['comment'] = type(self).__name__
-        dot = graphviz.Digraph(**graph_attrs)
+        dot = Digraph(**graph_attrs)
         handled_transitions = []
         # To ensure all the end nodes have unique names
         # I realized later I could have used monotonic() for this, but it's already implemented this way
